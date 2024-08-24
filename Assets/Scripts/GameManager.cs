@@ -1,18 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Singleton
+    public static GameManager Instance;
+
+    private void SingletonInit()
     {
-        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+
+    [Header("Managers")]
+    [SerializeField] private HealthUIManager healthUIManager;
+    [SerializeField] private BackgroundManager backgroundManager;
+
+    [Header("Normal")]
+    [SerializeField] private TMP_Text moneyLabel;
+
+    [Header("Health")]
+    [SerializeField] private int playerHealthMax;
+    public int playerHealth { get; private set; }
+
+    public int currentMoney { get; private set; } = 0;
+
+    private void Initialize()
+    {
+        currentMoney = 0;
+        healthUIManager.UiDisplayCalculator(playerHealth, playerHealthMax);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        SingletonInit();
     }
+
+    private void Start()
+    {
+        playerHealth = playerHealthMax;
+        Initialize();
+    }
+
+    public void AddMoney(int amount)
+    {
+        currentMoney += amount;
+        moneyLabel.text = currentMoney.ToString();
+    }
+
+    public void SetCurrentHp(int hp)
+    {
+        playerHealth = hp;
+        playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
+        healthUIManager.UiDisplayCalculator(playerHealth, playerHealthMax);
+    }
+
+    public void RemoveCurrentHp(int hp)
+    {
+        playerHealth -= hp;
+        playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
+        healthUIManager.UiDisplayCalculator(playerHealth, playerHealthMax);
+    } 
 }

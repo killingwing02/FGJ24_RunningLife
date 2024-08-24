@@ -74,6 +74,9 @@ public class PlayerControl : MonoBehaviour
         {
             Debug.Log("<color=red>Hit</color>: " + hit.collider.name);
             isInvisablity = true;
+
+            // TODO: Move damage to blocker's script.
+            GameManager.Instance.RemoveCurrentHp(5);
             LeanTween.alpha(playerSprite.gameObject, 0, .1f).setLoopPingPong(5).setOnComplete(() => isInvisablity = false);
         }
     }
