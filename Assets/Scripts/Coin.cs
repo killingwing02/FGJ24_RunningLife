@@ -8,7 +8,10 @@ public class Coin : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        Debug.Log("Interact: " + amount + " Coin.");
+        GameManager.Instance.AddMoney(amount);
+
+        // Debug.Log("Interact: " + amount + " Coin.");
+        Destroy(gameObject);
     }
 
 }
