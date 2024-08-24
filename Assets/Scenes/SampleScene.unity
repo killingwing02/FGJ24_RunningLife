@@ -375,7 +375,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c606fc1fe18d2a4392ede784dbcd009, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthUIManager: {fileID: 567494045}
+  backgroundManager: {fileID: 1292565401}
   moneyLabel: {fileID: 363910768}
+  playerHealthMax: 50
 --- !u!1 &363910766
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,8 +413,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500.46695, y: -47.487427}
-  m_SizeDelta: {x: 333.642, y: 94.975}
+  m_AnchoredPosition: {x: 581.9414, y: -47.487427}
+  m_SizeDelta: {x: 496.591, y: 94.975}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &363910768
 MonoBehaviour:
@@ -645,6 +648,7 @@ GameObject:
   - component: {fileID: 567494042}
   - component: {fileID: 567494043}
   - component: {fileID: 567494044}
+  - component: {fileID: 567494045}
   m_Layer: 5
   m_Name: Hearts
   m_TagString: Untagged
@@ -715,7 +719,7 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
-  m_ReverseArrangement: 1
+  m_ReverseArrangement: 0
 --- !u!114 &567494044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -736,6 +740,22 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &567494045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567494040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44f7efdfb4cfb664d8248a568a1dd71c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  heartsSprite:
+  - {fileID: 21300000, guid: da24fcda1bcf2a44f8f24c5347bc5b2c, type: 3}
+  - {fileID: 21300000, guid: b3939f6fe8f50794297cca6ff5806a46, type: 3}
+  - {fileID: 21300000, guid: 5c58629e38783c743946f05242436211, type: 3}
 --- !u!1 &805484875
 GameObject:
   m_ObjectHideFlags: 0
