@@ -25,17 +25,14 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) && !isMidAir)
         {
             rb.AddForce(jumpForce * Vector2.up);
+            
             animator.Play("Jump");
             animator.SetBool("Jump", true);
-            //isMidAir = true;
+
             Debug.Log("Jumped!");
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) && !isSliding)
         {
-            // Temp visual effect
-            //var scale = new Vector3(1f, .5f, 1f);
-            //transform.localScale = scale;
-
             animator.SetBool("Slide", true);
 
             isSliding = true;
@@ -44,8 +41,6 @@ public class PlayerControl : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.DownArrow) && isSliding)
         {
-            //transform.localScale = Vector3.one;
-
             animator.SetBool("Slide", false);
             isSliding = false;
         }
@@ -80,6 +75,16 @@ public class PlayerControl : MonoBehaviour
             Debug.Log("<color=red>Hit</color>: " + hit.collider.name);
             isInvisablity = true;
             LeanTween.alpha(playerSprite.gameObject, 0, .1f).setLoopPingPong(5).setOnComplete(() => isInvisablity = false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        var interact = collision.GetComponent<IInteractable>();
+
+        if (interact != null)
+        {
+            interact.OnInteract();
         }
     }
 
