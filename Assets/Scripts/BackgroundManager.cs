@@ -14,7 +14,7 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] private float midgroundRatio;
     [SerializeField] private float backgroundRatio;
 
-
+    private float speedFixed = 1f;
 
     private const float sceneLength = 20f;
 
@@ -23,7 +23,10 @@ public class BackgroundManager : MonoBehaviour
         // Pre-gen scene
         for (int i = 0; i < 3; i++)
         {
-            Instantiate(scenePrefab[Random.Range(0, scenePrefab.Count)], new Vector2(i * sceneLength, -4f), Quaternion.identity, foreground);
+            if (i == 0)
+                Instantiate(scenePrefab[0], new Vector2(0, -4f), Quaternion.identity, foreground);
+            else
+                Instantiate(scenePrefab[Random.Range(1, scenePrefab.Count)], new Vector2(i * sceneLength, -4f), Quaternion.identity, foreground);
         }
     }
 
@@ -31,13 +34,18 @@ public class BackgroundManager : MonoBehaviour
     {
         for (int i = 0; i < foreground.childCount; i++)
         {
-            foreground.GetChild(i).Translate(speed * Time.deltaTime * Vector2.left);
+            foreground.GetChild(i).Translate(speed * speedFixed * Time.deltaTime * Vector2.left);
         }
 
         if (foreground.GetChild(0).position.x < -20)
         {
             Destroy(foreground.GetChild(0).gameObject);
-            Instantiate(scenePrefab[Random.Range(0, scenePrefab.Count)], new Vector2(foreground.GetChild(foreground.childCount - 1).position.x + sceneLength, -4f), Quaternion.identity, foreground);
+            Instantiate(scenePrefab[Random.Range(1, scenePrefab.Count)], new Vector2(foreground.GetChild(foreground.childCount - 1).position.x + sceneLength, -4f), Quaternion.identity, foreground);
         }
+    }
+
+    public void ChangeFixedSpeedRatio(float speed)
+    {
+        speedFixed = speed;
     }
 }

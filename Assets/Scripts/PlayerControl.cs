@@ -7,12 +7,17 @@ public class PlayerControl : MonoBehaviour
 {
     [SerializeField] private float jumpForce;
     [SerializeField] private SpriteRenderer playerSprite;
+    [SerializeField] private LeanTweenType deadType;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject deadFx;
 
     private Rigidbody2D rb;
     private Animator animator;
     private bool isMidAir = false;
     private bool isSliding = false;
     private bool isInvisablity = false;
+    private bool isDead = false;
 
     void Start()
     {
@@ -66,8 +71,9 @@ public class PlayerControl : MonoBehaviour
             Debug.DrawLine(transform.position, hit.point, color);
         }
 
+        #region Damage Check
         // Damage check
-        if (isInvisablity) return;
+        if (isInvisablity || isDead) return;
 
         hit = Physics2D.Raycast(transform.position, Vector2.right, .35f);
         if (hit.collider != null && hit.collider.CompareTag("Blocker"))
@@ -97,6 +103,7 @@ public class PlayerControl : MonoBehaviour
             GameManager.Instance.RemoveCurrentHp(5);
             LeanTween.alpha(playerSprite.gameObject, 0, .1f).setLoopPingPong(5).setOnComplete(() => isInvisablity = false);
         }
+        #endregion
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -116,5 +123,19 @@ public class PlayerControl : MonoBehaviour
             animator.SetBool("Jump", false);
             isMidAir = false;
         }
+    }
+
+    public void PlayerDiedAnimation()
+    {
+        isDead = true;
+        playerSprite.color = Color.red;
+        animator.speed = 0f;
+        LeanTween.cancel(playerSprite.gameObject, true);
+        LeanTween.rotateZ(transform.GetChild(0).gameObject, 90f, .4f).setEase(deadType);
+        LeanTween.delayedCall(1f, () =>
+        {
+            playerSprite.color = Color.clear;
+            Instantiate(deadFx, playerSprite.transform.position, Quaternion.identity);
+        });
     }
 }

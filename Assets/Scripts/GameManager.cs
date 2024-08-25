@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] private UIManager healthUIManager;
     [SerializeField] private BackgroundManager backgroundManager;
+    [SerializeField] private PlayerControl playerControl;
 
     [Header("Normal")]
     [SerializeField] private TMP_Text moneyLabel;
@@ -60,16 +61,24 @@ public class GameManager : MonoBehaviour
     public void SetCurrentHp(int hp)
     {
         playerHealth = hp;
-        playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
-        if (playerHealth == 0) healthUIManager.YouDiedAnimation();
+        PlayerDeadCheck();
         healthUIManager.HpUiDisplayCalculator(playerHealth, playerHealthMax);
     }
 
     public void RemoveCurrentHp(int hp)
     {
         playerHealth -= hp;
-        playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
-        if (playerHealth == 0) healthUIManager.YouDiedAnimation();
+        PlayerDeadCheck();
         healthUIManager.HpUiDisplayCalculator(playerHealth, playerHealthMax);
-    } 
+    }
+
+    private void PlayerDeadCheck()
+    {
+        playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
+        if (playerHealth > 0) return;
+
+        healthUIManager.YouDiedAnimation();
+        playerControl.PlayerDiedAnimation();
+        backgroundManager.ChangeFixedSpeedRatio(0f);
+    }
 }
