@@ -1135,6 +1135,7 @@ MonoBehaviour:
   - {fileID: 807061150149984527, guid: ebc72faf98e3517479ccffb49ef8bdae, type: 3}
   - {fileID: 5991228666681671412, guid: c28f608f6454e254c874973bedca378e, type: 3}
   - {fileID: 5991228666681671412, guid: adb1ebdf1a61019449fc470db8330371, type: 3}
+  - {fileID: 4466941060859172171, guid: e4713776bb7171446a861fd952748209, type: 3}
   midgroundPrefab: {fileID: 3048465316165434573, guid: d7ac7ecc3fd723b43bdaf319f85b031c, type: 3}
   foreground: {fileID: 524576616}
   midground: {fileID: 1602442251}
