@@ -10,6 +10,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform diedText;
     [SerializeField] private CanvasGroup diedGroup;
 
+    [Header("Value Settings")]
+    [SerializeField] private float hurtTurnRedDuration;
+    [SerializeField] private LeanTweenType hurtTurnRedType;
+
     private void Start()
     {
         //YouDiedAnimation();
@@ -22,9 +26,10 @@ public class UIManager : MonoBehaviour
 
         // Every half heart is 0.1f * 10 = 1f
         // Maxmin hearts is 10f
-        var ratio = health * 10 / (float)maxHealth ;
+        var ratio = health * 10 / (float)maxHealth;
         var fullHeart = (int)(ratio / 2);
         var halfHeart = (int)(ratio % 2) != 0 ? true : false;
+        if (fullHeart <= 0 && ratio != 0) halfHeart = true;
 
         for (int i = 0; i < heartsTrans.childCount; i++)
         {
@@ -42,6 +47,24 @@ public class UIManager : MonoBehaviour
             {
                 heartsTrans.GetChild(i).GetComponent<Image>().sprite = heartsSprite[0];
             }
+        }
+
+        HurtHeartsAnimation();
+    }
+
+    public void HurtHeartsAnimation()
+    {
+        foreach (RectTransform heart in heartsTrans)
+        {
+            LeanTween.cancel(heart.gameObject);
+
+            heart.GetComponent<Image>().color = Color.red;
+            LeanTween.color(heart, Color.white, hurtTurnRedDuration).setEase(hurtTurnRedType);
+
+            var pos = heart.position;
+            pos.y += Random.Range(-10f, 10f);
+            heart.position = pos;
+            LeanTween.moveY(heart, -45f, hurtTurnRedDuration).setEase(hurtTurnRedType);
         }
     }
 

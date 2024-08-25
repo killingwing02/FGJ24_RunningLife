@@ -14,15 +14,37 @@ public class PlayerControl : MonoBehaviour
 
     private Rigidbody2D rb;
     private Animator animator;
-    private bool isMidAir = false;
-    private bool isSliding = false;
-    private bool isInvisablity = false;
-    private bool isDead = false;
+    private Vector3 originalPoint;
+    private bool isMidAir;
+    private bool isSliding;
+    private bool isInvisablity;
+    private bool isDead;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        originalPoint = transform.position;
+
+        Initialize();
+        GameManager.Instance.onGameStart.AddListener(OnGameStart);
+    }
+
+    public void Initialize()
+    {
+        isMidAir = false;
+        isSliding = false;
+        isInvisablity = false;
+        isDead = false;
+
+        LeanTween.cancel(gameObject, false);
+        LeanTween.cancel(playerSprite.gameObject, false);
+
+        transform.position = originalPoint;
+        transform.GetChild(0).rotation = Quaternion.identity;
+
+        playerSprite.color = Color.white;
     }
 
     void Update()
@@ -30,11 +52,9 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow) && !isMidAir)
         {
             rb.AddForce(jumpForce * Vector2.up);
-            
+
             animator.Play("Jump");
             animator.SetBool("Jump", true);
-
-            Debug.Log("Jumped!");
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) && !isSliding)
         {
@@ -130,12 +150,17 @@ public class PlayerControl : MonoBehaviour
         isDead = true;
         playerSprite.color = Color.red;
         animator.speed = 0f;
-        LeanTween.cancel(playerSprite.gameObject, true);
+        LeanTween.cancel(playerSprite.gameObject, false);
         LeanTween.rotateZ(transform.GetChild(0).gameObject, 90f, .4f).setEase(deadType);
         LeanTween.delayedCall(1f, () =>
         {
             playerSprite.color = Color.clear;
             Instantiate(deadFx, playerSprite.transform.position, Quaternion.identity);
         });
+    }
+
+    private void OnGameStart()
+    {
+        animator.speed = 1f;
     }
 }
