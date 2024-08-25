@@ -22,7 +22,7 @@ public class BackgroundManager : MonoBehaviour
 
     private void Start()
     {
-        Initialize();
+        //Initialize();
         GameManager.Instance.onGameStart.AddListener(OnGameStart);
     }
 
@@ -49,9 +49,14 @@ public class BackgroundManager : MonoBehaviour
 
     public void Initialize()
     {
-        foreach (GameObject child in foreground)
+        foreach (Transform child in foreground)
         {
-            Destroy(child);
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in midground)
+        { 
+            Destroy(child.gameObject);
         }
 
         // Pre-gen scene

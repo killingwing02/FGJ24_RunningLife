@@ -20,14 +20,17 @@ public class PlayerControl : MonoBehaviour
     private bool isInvisablity;
     private bool isDead;
 
+    private void Awake()
+    {
+        originalPoint = transform.position;
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
 
-        originalPoint = transform.position;
-
-        Initialize();
+        //Initialize();
         GameManager.Instance.onGameStart.AddListener(OnGameStart);
     }
 

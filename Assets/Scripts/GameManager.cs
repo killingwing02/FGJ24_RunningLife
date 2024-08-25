@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Normal")]
     [SerializeField] private TMP_Text moneyLabel;
+    [SerializeField] private int maxRespawnCount = 3;
+    private int currentRespawnCount = 0;
 
     [Header("Health")]
     [SerializeField] private int playerHealthMax;
@@ -47,8 +49,11 @@ public class GameManager : MonoBehaviour
 
     private void Initialize()
     {
-        currentMoney = 0;
         healthUIManager.HpUiDisplayCalculator(playerHealth, playerHealthMax);
+
+        backgroundManager.Initialize();
+        playerControl.Initialize();
+
         waitForSeconds = new WaitForSeconds(1);
     }
 
@@ -59,7 +64,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        playerHealth = playerHealthMax;
+        currentMoney = 0;
+        SetCurrentHpFull();
         Initialize();
         GameStart();
     }
@@ -96,11 +102,7 @@ public class GameManager : MonoBehaviour
         playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
         if (playerHealth > 0) return;
 
-        healthUIManager.YouDiedAnimation();
-        playerControl.PlayerDiedAnimation();
-        backgroundManager.ChangeFixedSpeedRatio(0f);
-
-        onPlayerDead?.Invoke();
+        Deadge();
     }
 
     private void GameStart()
@@ -109,14 +111,41 @@ public class GameManager : MonoBehaviour
         onGameStart?.Invoke();
     }
 
+    private void GameOver()
+    {
+        Debug.Log("Game over!");
+    }
+
+    private void Deadge()
+    {
+        healthUIManager.YouDiedAnimation();
+        playerControl.PlayerDiedAnimation();
+        backgroundManager.ChangeFixedSpeedRatio(0f);
+        currentRespawnCount++;
+
+        onPlayerDead?.Invoke();
+
+        // Game over check
+        if (currentRespawnCount >= maxRespawnCount) GameOver();
+        else
+        {
+            LeanTween.delayedCall(7.5f, () =>
+            {
+                SetCurrentHpFull();
+                Initialize();
+                GameStart();
+            });
+        }
+    }
+
     private IEnumerator LossHpOverTime()
     {
+        yield return waitForSeconds;
+        
         if (playerHealth <= 0)
         {
             yield break;
         }
-
-        yield return waitForSeconds;
         RemoveCurrentHp(1);
         StartCoroutine(LossHpOverTime());
     }

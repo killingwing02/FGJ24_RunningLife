@@ -379,6 +379,7 @@ MonoBehaviour:
   backgroundManager: {fileID: 1292565401}
   playerControl: {fileID: 4175075568873384376}
   moneyLabel: {fileID: 363910768}
+  maxRespawnCount: 3
   playerHealthMax: 50
   onGameStart:
     m_PersistentCalls:
