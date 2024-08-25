@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game over!");
+        LeanTween.delayedCall(7.5f, () => healthUIManager.Ending(currentMoney));
     }
 
     private void Deadge()

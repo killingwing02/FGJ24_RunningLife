@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform heartsTrans;
     [SerializeField] private RectTransform diedText;
     [SerializeField] private CanvasGroup diedGroup;
+    [SerializeField] private CanvasGroup endingGroup;
+    [SerializeField] private TMP_Text moneyText;
 
     [Header("Value Settings")]
     [SerializeField] private float hurtTurnRedDuration;
@@ -76,5 +79,12 @@ public class UIManager : MonoBehaviour
         LeanTween.alphaCanvas(diedGroup, 1f, 2f);
         LeanTween.scale(diedText, Vector3.one * 1.3f, 7f);
         LeanTween.delayedCall(5f, () => LeanTween.alphaCanvas(diedGroup, 0f, 2f).setOnComplete(() => diedGroup.gameObject.SetActive(false)));
+    }
+
+    public void Ending(int money)
+    {
+        moneyText.text = "$" + money;
+
+        LeanTween.alphaCanvas(endingGroup, 1f, 1f);
     }
 }
