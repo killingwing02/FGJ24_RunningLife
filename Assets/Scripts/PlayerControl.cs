@@ -78,6 +78,24 @@ public class PlayerControl : MonoBehaviour
             // TODO: Move damage to blocker's script.
             GameManager.Instance.RemoveCurrentHp(5);
             LeanTween.alpha(playerSprite.gameObject, 0, .1f).setLoopPingPong(5).setOnComplete(() => isInvisablity = false);
+            // Skip damage check if already get hurt.
+            return;
+        }
+
+        // Damage check from head
+        if (isSliding) return;
+
+        var startPoint = transform.position;
+        startPoint.y += .85f;
+        hit = Physics2D.Raycast(startPoint, Vector2.right, .35f);
+        if (hit.collider != null && hit.collider.CompareTag("Blocker"))
+        {
+            Debug.Log("<color=red>Hit</color>: " + hit.collider.name);
+            isInvisablity = true;
+
+            // TODO: Move damage to blocker's script.
+            GameManager.Instance.RemoveCurrentHp(5);
+            LeanTween.alpha(playerSprite.gameObject, 0, .1f).setLoopPingPong(5).setOnComplete(() => isInvisablity = false);
         }
     }
 
