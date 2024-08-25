@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class TitleScreen : MonoBehaviour
 {
+    [SerializeField] private CanvasGroup group;
+
+    private void Start()
+    {
+        LeanTween.alphaCanvas(group, .3f, 1f).setLoopPingPong();
+    }
 
     void Update()
     {

@@ -83,7 +83,7 @@ public class UIManager : MonoBehaviour
 
     public void Ending(int money)
     {
-        moneyText.text = "$" + money;
+        moneyText.text = "$ " + money;
 
         LeanTween.alphaCanvas(endingGroup, 1f, 1f);
     }
