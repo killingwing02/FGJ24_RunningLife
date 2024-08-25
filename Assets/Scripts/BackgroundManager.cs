@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BackgroundManager : MonoBehaviour
 {
-    [SerializeField] List<GameObject> scenePrefab;
+    [SerializeField] private List<GameObject> scenePrefab;
     [SerializeField] private Transform foreground;
     [SerializeField] private Transform midground;
     [SerializeField] private Transform background;
@@ -13,6 +13,8 @@ public class BackgroundManager : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float midgroundRatio;
     [SerializeField] private float backgroundRatio;
+
+
 
     private const float sceneLength = 20f;
 
@@ -29,7 +31,7 @@ public class BackgroundManager : MonoBehaviour
     {
         for (int i = 0; i < foreground.childCount; i++)
         {
-            foreground.GetChild(i).Translate(speed * Time.deltaTime * -Vector2.right);
+            foreground.GetChild(i).Translate(speed * Time.deltaTime * Vector2.left);
         }
 
         if (foreground.GetChild(0).position.x < -20)

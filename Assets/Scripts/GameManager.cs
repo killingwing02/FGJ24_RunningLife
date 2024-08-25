@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     [Header("Managers")]
-    [SerializeField] private HealthUIManager healthUIManager;
+    [SerializeField] private UIManager healthUIManager;
     [SerializeField] private BackgroundManager backgroundManager;
 
     [Header("Normal")]
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         currentMoney = 0;
-        healthUIManager.UiDisplayCalculator(playerHealth, playerHealthMax);
+        healthUIManager.HpUiDisplayCalculator(playerHealth, playerHealthMax);
     }
 
     private void Awake()
@@ -61,13 +61,15 @@ public class GameManager : MonoBehaviour
     {
         playerHealth = hp;
         playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
-        healthUIManager.UiDisplayCalculator(playerHealth, playerHealthMax);
+        if (playerHealth == 0) healthUIManager.YouDiedAnimation();
+        healthUIManager.HpUiDisplayCalculator(playerHealth, playerHealthMax);
     }
 
     public void RemoveCurrentHp(int hp)
     {
         playerHealth -= hp;
         playerHealth = Mathf.Clamp(playerHealth, 0, playerHealthMax);
-        healthUIManager.UiDisplayCalculator(playerHealth, playerHealthMax);
+        if (playerHealth == 0) healthUIManager.YouDiedAnimation();
+        healthUIManager.HpUiDisplayCalculator(playerHealth, playerHealthMax);
     } 
 }
